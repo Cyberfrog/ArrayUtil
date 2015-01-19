@@ -70,3 +70,43 @@ void test_ArrayUtil_has_previous_element_after_resizing_to_less_size(){
 	assertEqual(((int *)au1.base)[1],99);
 	assertEqual(((int *)au1.base)[2],66);
 }
+void test_findIndex_retruns_index_of_given_element_in_array(){
+	int i,index;
+	int x=66;
+	ArrayUtil au = create(sizeof(int),4);
+	ArrayUtil au1;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=666;
+	index = findIndex(au, &x);
+	assertEqual(index,2);
+}
+void test_findIndex_retruns_minus_1_given_element_is_not_present_in_array(){
+	int i,index;
+	int x=0;
+	ArrayUtil au = create(sizeof(int),4);
+	ArrayUtil au1;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=666;
+	index = findIndex(au, &x);
+	assertEqual(index,-1);
+}
+
+void test_findIndex_retruns_first_index_of_given_element_in_array(){
+	int i,index;
+	int x=66;
+	ArrayUtil au = create(sizeof(int),6);
+	ArrayUtil au1;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=66;
+	((int *)au.base)[4]=66;
+	((int *)au.base)[5]=66;
+
+	index = findIndex(au, &x);
+	assertEqual(index,2);
+}

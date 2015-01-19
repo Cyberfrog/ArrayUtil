@@ -28,3 +28,25 @@ ArrayUtil resize(ArrayUtil util, int length){
 	util.length = length;
 	return util;
 } 
+int findIndex(ArrayUtil util, void* element){
+	int i;
+	int sub_i =0;
+	int subByteLength =util.typeSize/(int)sizeof(char); 
+	char * bytes = (char *)util.base;
+	char * subByte =(char *)element;
+	int byteLength =util.length*util.typeSize;
+	for (i=0;i<(byteLength);i++){
+		if(sub_i>0&&bytes[i]!=subByte[sub_i]){
+			sub_i =0;
+		}
+		if(bytes[i]==subByte[sub_i]){
+			sub_i++;
+			if(sub_i==subByteLength){
+				return (i/util.typeSize);
+			}
+		}
+		
+	}
+	return -1;
+}
+
