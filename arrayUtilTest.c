@@ -39,3 +39,34 @@ void test_creat_returns_new_ArraUtil_of_specified_size_and_length_and_set_all_el
 	}
 
 }
+void test_ArrayUtil_has_previous_element_and_sets_new_element_to_zero_after_resizing_to_large_size(){
+	int i;
+	ArrayUtil au = create(sizeof(int),3);
+	ArrayUtil au1;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	au1 =  resize(au,5);
+	assertEqual(au1.length, 5);
+	assertEqual(((int *)au1.base)[0],101);
+	assertEqual(((int *)au1.base)[1],99);
+	assertEqual(((int *)au1.base)[2],66);
+	assertEqual(((int *)au1.base)[3],0);
+	assertEqual(((int *)au1.base)[3],0);
+
+}
+void test_ArrayUtil_has_previous_element_after_resizing_to_less_size(){
+	int i;
+	ArrayUtil au = create(sizeof(int),5);
+	ArrayUtil au1;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=666;
+	((int *)au.base)[4]=99;
+	au1 =  resize(au,3);
+	assertEqual(au1.length, 3);
+	assertEqual(((int *)au1.base)[0],101);
+	assertEqual(((int *)au1.base)[1],99);
+	assertEqual(((int *)au1.base)[2],66);
+}

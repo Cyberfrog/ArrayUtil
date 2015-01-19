@@ -18,3 +18,13 @@ ArrayUtil create(int typeSize, int length){
 	au.length =length;
 	return au;
 }
+ArrayUtil resize(ArrayUtil util, int length){
+	int i;
+	int diff = (length-util.length)*util.typeSize;
+	util.base = realloc(util.base, (length*util.typeSize));
+	for(i=0;i<diff;i++){
+		((char*)util.base)[i+(util.length*util.typeSize)]=0;
+	}
+	util.length = length;
+	return util;
+} 
