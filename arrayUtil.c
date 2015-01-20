@@ -69,3 +69,24 @@ void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 	}
 	return 0;
 }
+
+void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
+	int i,sub_i;
+	int lastIndex =-1;
+	void * item = malloc(util.typeSize);
+	for (i=0;i<util.length;i++){
+		for(sub_i=0;sub_i<util.typeSize;sub_i++){
+			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
+		}
+		if(match(hint,item)){
+			lastIndex =(i*util.typeSize);
+		}
+	}
+	if(lastIndex>=0){
+		for(sub_i=0;sub_i<util.typeSize;sub_i++){
+			((char*)item)[sub_i] = ((char*)util.base)[lastIndex+sub_i];
+		}
+		return item;
+	}
+	return 0;
+}

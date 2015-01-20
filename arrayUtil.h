@@ -12,3 +12,4 @@ ArrayUtil resize(ArrayUtil util, int length);
 int findIndex(ArrayUtil util, void* element);
 void dispose(ArrayUtil util);
 void* findFirst(ArrayUtil util, MatchFunc* match, void* hint);
+void* findLast(ArrayUtil util, MatchFunc* match, void* hint);

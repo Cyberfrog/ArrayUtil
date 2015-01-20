@@ -170,3 +170,40 @@ void test_findFirst_retruns_null_if_non_of_array_element_matches(){
 	firstIndex=(int*)findFirst(au,isEven,0);
  	assertEqual((int)firstIndex,0);
 }
+void test_findLast_retruns_Last_even_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=77;
+	((int *)au.base)[4]=2;
+	((int *)au.base)[5]=4;
+	firstIndex=(int*)findLast(au,isEven,0);
+ 	assertEqual(*firstIndex,4);
+}
+void test_findLast_retruns_last_lessthan_10_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	int hint =10;
+	((int *)au.base)[0]=1;
+	((int *)au.base)[1]=2;
+	((int *)au.base)[2]=3;
+	((int *)au.base)[3]=88;
+	((int *)au.base)[4]=35;
+	((int *)au.base)[5]=12;
+	firstIndex=(int*)findLast(au,lessthan,&hint);
+ 	assertEqual(*firstIndex,3);
+}
+void test_findLast_retruns_null_if_non_of_array_element_matches(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=11;
+	((int *)au.base)[3]=13;
+	((int *)au.base)[4]=13;
+	((int *)au.base)[5]=21;
+	firstIndex=(int*)findLast(au,isEven,0);
+ 	assertEqual((int)firstIndex,0);
+}
