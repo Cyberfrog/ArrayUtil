@@ -110,3 +110,17 @@ void test_findIndex_retruns_first_index_of_given_element_in_array(){
 	index = findIndex(au, &x);
 	assertEqual(index,2);
 }
+
+void test_dispose_free_the_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=66;
+	((int *)au.base)[4]=66;
+	((int *)au.base)[5]=66;
+	dispose(au);
+	// assertEqual(au.length,0);
+	// assertEqual(au.typeSize,0);
+	// assert((int*)au.base==0);
+}
