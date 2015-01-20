@@ -95,6 +95,19 @@ void test_findIndex_retruns_minus_1_given_element_is_not_present_in_array(){
 	assertEqual(index,-1);
 }
 
+
+void test_findIndex_retruns_index_of_match_char_in_present_in_array(){
+	int index;
+	char  x='h';
+	ArrayUtil au = create(sizeof(char),4);
+	ArrayUtil au1;
+	((char *)au.base)[0]='a';
+	((char *)au.base)[1]='b';
+	((char *)au.base)[2]='h';
+	((char *)au.base)[3]='g';
+	index = findIndex(au, &x);
+	assertEqual(index,2);
+}
 void test_findIndex_retruns_first_index_of_given_element_in_array(){
 	int i,index;
 	int x=66;
@@ -206,4 +219,41 @@ void test_findLast_retruns_null_if_non_of_array_element_matches(){
 	((int *)au.base)[5]=21;
 	firstIndex=(int*)findLast(au,isEven,0);
  	assertEqual((int)firstIndex,0);
+}
+void test_count_retruns_count_of_even_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int c;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=77;
+	((int *)au.base)[4]=2;
+	((int *)au.base)[5]=4;
+	c=count(au,isEven,0);
+ 	assertEqual(c,3);
+}
+void test_count_retruns_count_of_lessthan_10_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int c;
+	int hint =10;
+	((int *)au.base)[0]=1;
+	((int *)au.base)[1]=2;
+	((int *)au.base)[2]=3;
+	((int *)au.base)[3]=88;
+	((int *)au.base)[4]=35;
+	((int *)au.base)[5]=9;
+	c=count(au,lessthan,&hint);
+ 	assertEqual(c,4);
+}
+void test_count_retruns_0_if_non_of_array_element_matches(){
+	ArrayUtil au = create(sizeof(int),6);
+	int c;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=11;
+	((int *)au.base)[3]=13;
+	((int *)au.base)[4]=13;
+	((int *)au.base)[5]=21;
+	c=count(au,isEven,0);
+ 	assertEqual((int)c,0);
 }

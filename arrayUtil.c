@@ -35,6 +35,7 @@ int findIndex(ArrayUtil util, void* element){
 	char * bytes = (char *)util.base;
 	char * subByte =(char *)element;
 	int byteLength =util.length*util.typeSize;
+
 	for (i=0;i<(byteLength);i++){
 		if(sub_i>0&&bytes[i]!=subByte[sub_i]){
 			sub_i =0;
@@ -89,4 +90,18 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 		return item;
 	}
 	return 0;
+}
+int count(ArrayUtil util, MatchFunc* match, void* hint){
+	int i,sub_i;
+	int c=0;
+	void * item = malloc(util.typeSize);
+	for (i=0;i<util.length;i++){
+		for(sub_i=0;sub_i<util.typeSize;sub_i++){
+			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
+		}
+		if(match(hint,item)){
+			c++;
+		}
+	}
+	return c;
 }
