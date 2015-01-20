@@ -124,3 +124,49 @@ void test_dispose_free_the_array(){
 	// assertEqual(au.typeSize,0);
 	// assert((int*)au.base==0);
 }
+
+int isEven(void *hint,void *item){
+	return (*((int*)item)%2)==0;
+}
+void test_findFirst_retruns_first_even_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=77;
+	((int *)au.base)[4]=2;
+	((int *)au.base)[5]=4;
+	firstIndex=(int*)findFirst(au,isEven,0);
+ 	assertEqual(*firstIndex,66);
+}
+
+int lessthan(void *hint,void *item ){
+	return *((int *)item)<*((int *)hint);
+}
+
+void test_findFirst_retruns_first_lessthan_10_number_from_array(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	int hint =10;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=66;
+	((int *)au.base)[3]=77;
+	((int *)au.base)[4]=2;
+	((int *)au.base)[5]=4;
+	firstIndex=(int*)findFirst(au,lessthan,&hint);
+ 	assertEqual(*firstIndex,2);
+}
+void test_findFirst_retruns_null_if_non_of_array_element_matches(){
+	ArrayUtil au = create(sizeof(int),6);
+	int *firstIndex;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=99;
+	((int *)au.base)[2]=11;
+	((int *)au.base)[3]=13;
+	((int *)au.base)[4]=13;
+	((int *)au.base)[5]=21;
+	firstIndex=(int*)findFirst(au,isEven,0);
+ 	assertEqual((int)firstIndex,0);
+}
