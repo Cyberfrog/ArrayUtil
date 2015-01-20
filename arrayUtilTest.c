@@ -1,5 +1,6 @@
 #include "expr_assert.h"
 #include "arrayUtil.h"
+#include <stdlib.h>
 void test_areEqual_returns_1_when_content_of_both_array_are_same(){
 	int marks1[] ={1,2,3,4,5};
 	int marks2[] ={1,2,3,4,5};
@@ -14,7 +15,34 @@ void test_areEqual_returns_1_when_content_of_both_array_are_same(){
 	result = areEqual(au1,au2);
 	assertEqual(result, 1);
 } 
-
+void test_areEqual_returns_1_when_content_of_both_char_array_are_same_(){
+	char marks1[] ={'q','w','e','r','t'};
+	char marks2[] ={'q','w','e','r','t'};
+	char result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(char);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(char);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 1);
+} 
+void test_areEqual_returns_1_when_content_of_both_Flaot_array_are_same_(){
+	char marks1[] ={'q','w','e','r','t'};
+	char marks2[] ={'q','w','e','r','t'};
+	char result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(char);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(char);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 1);
+} 
 void test_areEqual_returns_0_when_content_of_both_array_are_not_same(){
 	int marks1[] ={1,2,3,4,5};
 	int marks2[] ={1,2,4,4,3};
@@ -256,4 +284,38 @@ void test_count_retruns_0_if_non_of_array_element_matches(){
 	((int *)au.base)[5]=21;
 	c=count(au,isEven,0);
  	assertEqual((int)c,0);
+}
+void test_filter_populate_destination_array_with_evenNumbers(){
+	
+	ArrayUtil au = create(sizeof(int),6);
+	int maxItem=6;
+	int *evens =(int *)malloc(sizeof(int)*maxItem);
+	int c;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=22;
+	((int *)au.base)[2]=12;
+	((int *)au.base)[3]=13;
+	((int *)au.base)[4]=14;
+	((int *)au.base)[5]=21;
+	c=filter(au,isEven,0,(void**)&evens,maxItem);
+ 	assertEqual(c,3);
+ 	assertEqual(evens[0],22);
+ 	assertEqual(evens[1],12);
+ 	assertEqual(evens[2],14);
+}
+void test_filter_populate_destination_array_until_hits_max_size_and_return_no_element_added_to_id(){
+	ArrayUtil au = create(sizeof(int),6);
+	int maxItem=2;
+	int *evens =(int *)malloc(sizeof(int)*maxItem);
+	int c;
+	((int *)au.base)[0]=101;
+	((int *)au.base)[1]=22;
+	((int *)au.base)[2]=12;
+	((int *)au.base)[3]=13;
+	((int *)au.base)[4]=14;
+	((int *)au.base)[5]=21;
+	c=filter(au,isEven,0,(void**)&evens,maxItem);
+ 	assertEqual(c,2);
+ 	assertEqual(evens[0],22);
+ 	assertEqual(evens[1],12);
 }

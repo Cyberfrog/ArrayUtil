@@ -32,8 +32,8 @@ int findIndex(ArrayUtil util, void* element){
 	int i;
 	int sub_i =0;
 	int subByteLength =util.typeSize/(int)sizeof(char); 
-	char * bytes = (char *)util.base;
-	char * subByte =(char *)element;
+	char* bytes = (char*)util.base;
+	char* subByte =(char*)element;
 	int byteLength =util.length*util.typeSize;
 
 	for (i=0;i<(byteLength);i++){
@@ -98,4 +98,26 @@ int count(ArrayUtil util, MatchFunc* match, void* hint){
 		}
 	}
 	return c;
+}
+
+int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems ){
+	int i,sub_i;
+	int counter=0;
+	void * item = malloc(util.typeSize);
+	for (i=0;i<util.length;i++){
+		for(sub_i=0;sub_i<util.typeSize;sub_i++){
+			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
+		}
+		if(match(hint,item)){
+			for(sub_i=0;sub_i<util.typeSize;sub_i++){
+				((char*)*destination)[sub_i+(counter*util.typeSize)] = ((char*)item)[sub_i];
+			}
+			counter++;
+		}
+		if(counter==maxItems){
+			return counter;
+		}
+	
+	}
+	return counter;
 }
