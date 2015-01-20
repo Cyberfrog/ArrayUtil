@@ -15,6 +15,22 @@ void test_areEqual_returns_1_when_content_of_both_array_are_same(){
 	result = areEqual(au1,au2);
 	assertEqual(result, 1);
 } 
+
+void test_areEqual_returns_0_when_content_of_both_array_are_not_same(){
+	int marks1[] ={1,2,3,4,5};
+	int marks2[] ={1,2,4,4,3};
+	int result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(int);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(int);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 0);
+}
+// -------------------------------------areEqual(char)--------------------------------------------------------------
 void test_areEqual_returns_1_when_content_of_both_char_array_are_same_(){
 	char marks1[] ={'q','w','e','r','t'};
 	char marks2[] ={'q','w','e','r','t'};
@@ -29,9 +45,9 @@ void test_areEqual_returns_1_when_content_of_both_char_array_are_same_(){
 	result = areEqual(au1,au2);
 	assertEqual(result, 1);
 } 
-void test_areEqual_returns_1_when_content_of_both_Flaot_array_are_same_(){
+void test_areEqual_returns_0_when_content_of_both_char_array_are_not_same(){
 	char marks1[] ={'q','w','e','r','t'};
-	char marks2[] ={'q','w','e','r','t'};
+	char marks2[] ={'Q','t','W','r','t'};
 	char result;
 	ArrayUtil au1,au2 ;
 	au1.base = marks1;
@@ -41,18 +57,64 @@ void test_areEqual_returns_1_when_content_of_both_Flaot_array_are_same_(){
 	au2.typeSize=sizeof(char);
 	au2.length = 5;
 	result = areEqual(au1,au2);
-	assertEqual(result, 1);
+	assertEqual(result, 0);
 } 
-void test_areEqual_returns_0_when_content_of_both_array_are_not_same(){
-	int marks1[] ={1,2,3,4,5};
-	int marks2[] ={1,2,4,4,3};
-	int result;
+// -------------------------------------areEqual(float)--------------------------------------------------------------
+void test_areEqual_returns_1_when_content_of_both_float_array_are_same_(){
+	float marks1[] ={3.1,5.2,3.2,5.4,0.2};
+	float marks2[] ={3.1,5.2,3.2,5.4,0.2};
+	float result;
 	ArrayUtil au1,au2 ;
 	au1.base = marks1;
-	au1.typeSize=sizeof(int);
+	au1.typeSize=sizeof(float);
 	au1.length = 5;
 	au2.base = marks2;
-	au2.typeSize=sizeof(int);
+	au2.typeSize=sizeof(float);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 1);
+} 
+void test_areEqual_returns_0_when_content_of_both_float_array_are_not_same(){
+	float marks1[] ={3.1,5.2,3.2,5.4,0.2};
+	float marks2[] ={3.2,5.4,3.1,5.2,4.2};
+	float result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(float);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(float);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 0);
+} 
+
+// -------------------------------------areEqual(double)--------------------------------------------------------------
+
+void test_areEqual_returns_1_when_content_of_both_double_array_are_same_(){
+	double marks1[] ={333.1,3335.2,3333.2,555.4,2220.2};
+	double marks2[] ={333.1,3335.2,3333.2,555.4,2220.2};
+	double result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(double);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(double);
+	au2.length = 5;
+	result = areEqual(au1,au2);
+	assertEqual(result, 1);
+} 
+void test_areEqual_returns_0_when_content_of_both_double_array_are_not_same(){
+	double marks1[] ={333.1,3335.2,3333.2,555.4,2220.2};
+	double marks2[] ={3.2,5.4,3.1,5.2,4.2};
+	double result;
+	ArrayUtil au1,au2 ;
+	au1.base = marks1;
+	au1.typeSize=sizeof(double);
+	au1.length = 5;
+	au2.base = marks2;
+	au2.typeSize=sizeof(double);
 	au2.length = 5;
 	result = areEqual(au1,au2);
 	assertEqual(result, 0);
