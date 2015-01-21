@@ -72,7 +72,7 @@ void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 	byte_ptr base = (byte_ptr) util.base;
 	for (i=0;i<util.length;i++){
 		
-		memcpy(item,&(base[i*util.typeSize]),util.typeSize);
+		item=&(base[i*util.typeSize]);
 		
 		if(match(hint,item)){
 			return item;
@@ -87,7 +87,7 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 	void * item = malloc(util.typeSize);
 	for (i = (util.length-1);i >= 0;i--){
 		
-		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
+		item=&(base[(i*util.typeSize)]);
 		
 		if(match(hint,item)){
 			return item;
@@ -99,10 +99,10 @@ int count(ArrayUtil util, MatchFunc* match, void* hint){
 	int i;
 	int counter = 0;
 	byte_ptr base = (byte_ptr) util.base;
-	void * item = malloc(util.typeSize);
+	void * item ;
 	for (i = 0;i < util.length;i++){
 
-		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
+		item=&(base[(i*util.typeSize)]);
 
 		if(match(hint,item)){
 			counter++;
@@ -116,11 +116,9 @@ int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int
 	int counter = 0;
 	byte_ptr * dest =(byte_ptr*) destination;
 	byte_ptr base = (byte_ptr) util.base;
-	void * item = malloc(util.typeSize);
+	void * item ;
 	for (i = 0;i < util.length;i++){
-
-		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
-	
+		item =&(base[(i*util.typeSize)]);	
 		if(match(hint,item)){
 			memcpy(&((*dest)[counter*util.typeSize]),item,util.typeSize);
 			counter++;
@@ -146,7 +144,6 @@ void map(ArrayUtil source, ArrayUtil destination, ConvertFunc* convert, void* hi
 void forEach(ArrayUtil util, OperationFunc* operation, void* hint){
 	int i;
 	byte_ptr base = (byte_ptr) util.base;
-
 	for (i=0;i<util.length;i++){
 		operation(hint,&(base[(i*util.typeSize)]));
 	}
