@@ -78,7 +78,7 @@ void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 			return item;
 		}
 	}
-	return 0;
+	return NULL;
 }
 
 void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
@@ -93,7 +93,7 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 			return item;
 		}
 	}
-	return 0;
+	return NULL;
 }
 int count(ArrayUtil util, MatchFunc* match, void* hint){
 	int i;
@@ -150,4 +150,14 @@ void forEach(ArrayUtil util, OperationFunc* operation, void* hint){
 	for (i=0;i<util.length;i++){
 		operation(hint,&(base[(i*util.typeSize)]));
 	}
+}
+
+void* reduce(ArrayUtil util, ReducerFunc* reducer, void* hint, void* intialValue){
+	int i;
+	byte_ptr base = (byte_ptr) util.base;
+	void * prevValue = intialValue ;
+	for (i=0;i<util.length;i++){
+		prevValue =	reducer(hint,prevValue,&(base[(i*util.typeSize)]));
+	}
+	return prevValue;
 }

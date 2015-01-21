@@ -396,13 +396,12 @@ void test_map_converts_each_element_source_array_and_put_it_to_destination_array
 	ArrayUtil expected={(int[]){10,20,30,40,50},sizeof(int),5};
 	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
 	util2 =create(sizeof(int),5);
-
 	map(util1,util2,multiplyBy,&hint);
 	assert(areEqual(expected, util2));
 }
- void add10(void* hint, void* item){
- 	((int*)util2.base)[*(int*)hint] =  *(int*)item+10;
- 	(*(int*)hint)++; 	
+ void add10(void* index, void* item){
+ 	((int*)util2.base)[*(int*)index] =  *(int*)item+10;
+ 	(*(int*)index)++; 	
  }
 void test_forEach_call_add_function_with_each_element_in_array (){
 	int hint = 0;
@@ -412,4 +411,18 @@ void test_forEach_call_add_function_with_each_element_in_array (){
 
 	forEach(util1,add10,&hint);
 	assert(areEqual(expected, util2));
+}
+void * add(void* hint, void* previousItem, void* item){
+ 	int * a = (int *)malloc(sizeof(int));
+ 	* a = *(int*)previousItem + *(int*)item;
+ 	return a;
+}
+
+void test_reduce_call_add_function_with_each_element_in_array_and_retruns_last_call_value (){
+	int hint = 0,initVlaue=0;
+	int *result; 
+	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+
+	 result = (int *)reduce(util1,add,&hint,&initVlaue);
+	assertEqual(*result, 15);
 }
