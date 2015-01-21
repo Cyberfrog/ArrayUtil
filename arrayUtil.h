@@ -1,5 +1,5 @@
 typedef struct arrayUtil ArrayUtil;
-typedef char * byte;
+typedef char * byte_ptr;
 typedef int (MatchFunc)(void* hint, void* item);
 struct arrayUtil{
 	void *base;

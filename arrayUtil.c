@@ -1,10 +1,15 @@
 #include "arrayUtil.h"
 #include <stdlib.h>
+#include <string.h>
 int areEqual(ArrayUtil a, ArrayUtil b){
 	int i;
-	int maxLength = a.length<=b.length?(b.length*a.typeSize):(a.length*a.typeSize);
-	for(i=0;i<maxLength;i++){
-		if(((char*) a.base)[i]!=((char*)b.base)[i]){
+	int byteLength = a.length*a.typeSize;
+	byte_ptr a_bytes = a.base, b_bytes = b.base;
+	if(a.length != b.length||a.typeSize != b.typeSize){
+		return 0;
+	}
+	for(i = 0;i < byteLength;i++){
+		if(a_bytes[i] != b_bytes[i]){
 			return 0;
 		}
 	}
@@ -12,34 +17,41 @@ int areEqual(ArrayUtil a, ArrayUtil b){
 }
 
 ArrayUtil create(int typeSize, int length){
-	ArrayUtil au;
-	au.base = calloc(length,typeSize);
-	au.typeSize=typeSize;
-	au.length =length;
-	return au;
+	return	(ArrayUtil){calloc(length,typeSize),typeSize,length}; 
 }
+
 ArrayUtil resize(ArrayUtil util, int length){
-	int i;
+	int i,index;
+	byte_ptr base;
+	int newLength = length*util.typeSize;
+	int byteLength =util.length*util.typeSize;	
 	int diff = (length-util.length)*util.typeSize;
-	util.base = realloc(util.base, (length*util.typeSize));
-	for(i=0;i<diff;i++){
-		((char*)util.base)[i+(util.length*util.typeSize)]=0;
-	}
+
+	util.base = realloc(util.base,newLength);
 	util.length = length;
+	base = (byte_ptr)util.base;
+
+	for(i = 0;i < diff;i++){
+		index = i+byteLength;
+		base[index] = 0;
+	}
 	return util;
 } 
+
 int findIndex(ArrayUtil util, void* element){
 	int i;
-	int sub_i =0;
-	int subByteLength =util.typeSize/(int)sizeof(char); 
-	char* bytes = (char*)util.base;
-	char* subByte =(char*)element;
-	int byteLength =util.length*util.typeSize;
+	int sub_i = 0;
+	int subByteLength = util.typeSize; 
+	int byteLength = util.length*util.typeSize;
+	byte_ptr bytes = (byte_ptr)util.base;
+	byte_ptr subByte = (byte_ptr)element;
 
-	for (i=0;i<(byteLength);i++){
-		if(sub_i>0&&bytes[i]!=subByte[sub_i]){
-			sub_i =0;
+	for (i = 0;i < (byteLength);i++){
+	
+		if(sub_i > 0 && bytes[i] != subByte[sub_i]){
+			sub_i = 0;
 		}
+	
 		if(bytes[i]==subByte[sub_i]){
 			sub_i++;
 			if(sub_i==subByteLength){
@@ -52,18 +64,15 @@ int findIndex(ArrayUtil util, void* element){
 }
 void dispose(ArrayUtil util){
 	free(util.base);
-	util.base=0;
-	util.length=0;
-	util.typeSize=0;
 }
 
 void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
-	int i,sub_i;
+	int i;
 	void * item = malloc(util.typeSize);
 	for (i=0;i<util.length;i++){
-		for(sub_i=0;sub_i<util.typeSize;sub_i++){
-			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
-		}
+		
+		memcpy(item,&(util.base[i*util.typeSize]),util.typeSize);
+		
 		if(match(hint,item)){
 			return item;
 		}
@@ -72,48 +81,46 @@ void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 }
 
 void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
-	int i,sub_i;
-	int lastIndex =-1;
+	int i;
 	void * item = malloc(util.typeSize);
-	for (i=(util.length-1);i>=0;i--){
-		for(sub_i=(util.typeSize-1);sub_i>=0;sub_i--){
-			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
-		}
+	for (i = (util.length-1);i >= 0;i--){
+		
+		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+		
 		if(match(hint,item)){
-		 return item;
+			return item;
 		}
 	}
 	return 0;
 }
 int count(ArrayUtil util, MatchFunc* match, void* hint){
-	int i,sub_i;
-	int c=0;
+	int i;
+	int counter = 0;
 	void * item = malloc(util.typeSize);
-	for (i=0;i<util.length;i++){
-		for(sub_i=0;sub_i<util.typeSize;sub_i++){
-			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
-		}
+	for (i = 0;i < util.length;i++){
+
+		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+
 		if(match(hint,item)){
-			c++;
+			counter++;
 		}
 	}
-	return c;
+	return counter;
 }
 
 int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems ){
-	int i,sub_i;
-	int counter=0;
+	int i;
+	int counter = 0;
 	void * item = malloc(util.typeSize);
-	for (i=0;i<util.length;i++){
-		for(sub_i=0;sub_i<util.typeSize;sub_i++){
-			((char*)item)[sub_i] = ((char*)util.base)[(i*util.typeSize)+sub_i];
-		}
+	for (i = 0;i < util.length;i++){
+
+		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+	
 		if(match(hint,item)){
-			for(sub_i=0;sub_i<util.typeSize;sub_i++){
-				((char*)*destination)[sub_i+(counter*util.typeSize)] = ((char*)item)[sub_i];
-			}
+			memcpy(&((*destination)[counter*util.typeSize]),item,util.typeSize);
 			counter++;
 		}
+
 		if(counter==maxItems){
 			return counter;
 		}

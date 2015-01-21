@@ -1,6 +1,7 @@
 #include "expr_assert.h"
 #include "arrayUtil.h"
 #include <stdlib.h>
+
 void test_areEqual_returns_1_when_content_of_both_array_are_same(){
 	int marks1[] ={1,2,3,4,5};
 	int marks2[] ={1,2,3,4,5};
@@ -142,7 +143,7 @@ void test_ArrayUtil_has_previous_element_and_sets_new_element_to_zero_after_resi
 	assertEqual(((int *)au1.base)[1],99);
 	assertEqual(((int *)au1.base)[2],66);
 	assertEqual(((int *)au1.base)[3],0);
-	assertEqual(((int *)au1.base)[3],0);
+	assertEqual(((int *)au1.base)[4],0);
 
 }
 void test_ArrayUtil_has_previous_element_after_resizing_to_less_size(){
