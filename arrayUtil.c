@@ -137,9 +137,17 @@ void map(ArrayUtil source, ArrayUtil destination, ConvertFunc* convert, void* hi
 	int i;
 	byte_ptr base = (byte_ptr) source.base;
 	byte_ptr dest = (byte_ptr)destination.base;
-	
+
 	for (i=0;i<source.length;i++){
 		convert(hint,&(base[(i*source.typeSize)]),&(dest[(i*destination.typeSize)]));
 	}
 }
 
+void forEach(ArrayUtil util, OperationFunc* operation, void* hint){
+	int i;
+	byte_ptr base = (byte_ptr) util.base;
+
+	for (i=0;i<util.length;i++){
+		operation(hint,&(base[(i*util.typeSize)]));
+	}
+}

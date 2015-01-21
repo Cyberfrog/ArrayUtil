@@ -1,8 +1,12 @@
 #include "expr_assert.h"
 #include "arrayUtil.h"
 #include <stdlib.h>
+#include <string.h>
 ArrayUtil util1,util2;
-
+typedef struct Student{
+	int rollno;
+	float age;
+} student;
 void test_areEqual_returns_1_when_content_of_both_array_are_same(){
 	int result;
 	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
@@ -107,6 +111,31 @@ void test_creat_returns_new_ArraUtil_of_specified_size_and_length_and_set_all_el
 	}
 
 }
+void test_create_Structures_with_all_fields_NULL(){
+	student temp = {0,0.0};
+	student Student[1] = {temp};
+	ArrayUtil expected = {Student,sizeof(student),1};
+	util1 = create(sizeof(student),1);	
+	assert(areEqual(expected,util1));
+};
+void test_resize_sets_new_elements_to_zero_in_double(){
+	double expectedArray[] = {1.0,0.0};
+	ArrayUtil b = {expectedArray,sizeof(double),2};
+	util1 = create(sizeof(double),1);
+	((double*)util1.base)[0] = 1.0;
+	util1 = resize(util1, 2);
+	assert(areEqual(b, util1));
+}
+void test_resize_sets_new_elements_to_NULL(){
+	String blank = '\0';
+	String expectedArray[] = {"digs",blank};
+	String name[] = {"digs"};
+	ArrayUtil b = {expectedArray,sizeof(String),2};
+	util1 = create(sizeof(String),1);
+	memcpy(util1.base, name, sizeof(String)*1);
+	util1 = resize(util1, 2);
+	assert(areEqual(b, util1));
+};
 void test_ArrayUtil_has_previous_element_and_sets_new_element_to_zero_after_resizing_to_large_size(){
 	int i;
 	ArrayUtil au = create(sizeof(int),3);
@@ -367,7 +396,20 @@ void test_map_converts_each_element_source_array_and_put_it_to_destination_array
 	ArrayUtil expected={(int[]){10,20,30,40,50},sizeof(int),5};
 	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
 	util2 =create(sizeof(int),5);
-	
+
 	map(util1,util2,multiplyBy,&hint);
+	assert(areEqual(expected, util2));
+}
+ void add10(void* hint, void* item){
+ 	((int*)util2.base)[*(int*)hint] =  *(int*)item+10;
+ 	(*(int*)hint)++; 	
+ }
+void test_forEach_call_add_function_with_each_element_in_array (){
+	int hint = 0;
+	ArrayUtil expected={(int[]){11,12,13,14,15},sizeof(int),5};
+	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+	util2= create(sizeof(int), 5);
+
+	forEach(util1,add10,&hint);
 	assert(areEqual(expected, util2));
 }

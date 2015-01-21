@@ -2,6 +2,8 @@ typedef struct arrayUtil ArrayUtil;
 typedef char * byte_ptr;
 typedef int (MatchFunc)(void* hint, void* item);
 typedef void (ConvertFunc)(void* hint, void* sourceItem, void* destinationItem);
+typedef void (OperationFunc)(void* hint, void* item);
+typedef char * String;
 struct arrayUtil{
 	void *base;
 	int typeSize;
@@ -18,3 +20,4 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint);
 int count(ArrayUtil util, MatchFunc* match, void* hint);
 int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems );
 void map(ArrayUtil source, ArrayUtil destination, ConvertFunc* convert, void* hint);
+void forEach(ArrayUtil util, OperationFunc* operation, void* hint);
