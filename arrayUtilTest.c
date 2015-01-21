@@ -1,63 +1,40 @@
 #include "expr_assert.h"
 #include "arrayUtil.h"
 #include <stdlib.h>
+ArrayUtil util1,util2;
 
 void test_areEqual_returns_1_when_content_of_both_array_are_same(){
-	int marks1[] ={1,2,3,4,5};
-	int marks2[] ={1,2,3,4,5};
 	int result;
-	ArrayUtil au1,au2 ;
-	au1.base = marks1;
-	au1.typeSize=sizeof(int);
-	au1.length = 5;
-	au2.base = marks2;
-	au2.typeSize=sizeof(int);
-	au2.length = 5;
-	result = areEqual(au1,au2);
+	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+	util2=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+
+	result = areEqual(util1,util2);
 	assertEqual(result, 1);
 } 
 
 void test_areEqual_returns_0_when_content_of_both_array_are_not_same(){
-	int marks1[] ={1,2,3,4,5};
-	int marks2[] ={1,2,4,4,3};
 	int result;
-	ArrayUtil au1,au2 ;
-	au1.base = marks1;
-	au1.typeSize=sizeof(int);
-	au1.length = 5;
-	au2.base = marks2;
-	au2.typeSize=sizeof(int);
-	au2.length = 5;
-	result = areEqual(au1,au2);
+	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+	util2=(ArrayUtil){(int[]){1,2,4,3,5},sizeof(int),5};
+
+	result = areEqual(util1,util2);
 	assertEqual(result, 0);
 }
 // -------------------------------------areEqual(char)--------------------------------------------------------------
 void test_areEqual_returns_1_when_content_of_both_char_array_are_same_(){
-	char marks1[] ={'q','w','e','r','t'};
-	char marks2[] ={'q','w','e','r','t'};
-	char result;
-	ArrayUtil au1,au2 ;
-	au1.base = marks1;
-	au1.typeSize=sizeof(char);
-	au1.length = 5;
-	au2.base = marks2;
-	au2.typeSize=sizeof(char);
-	au2.length = 5;
-	result = areEqual(au1,au2);
+	int result;
+	util1=(ArrayUtil){(char[]){'q','w','e','r','t'},sizeof(char),5};
+	util2=(ArrayUtil){(char[]){'q','w','e','r','t'},sizeof(char),5};
+
+	result = areEqual(util1,util2);
 	assertEqual(result, 1);
 } 
 void test_areEqual_returns_0_when_content_of_both_char_array_are_not_same(){
-	char marks1[] ={'q','w','e','r','t'};
-	char marks2[] ={'Q','t','W','r','t'};
-	char result;
-	ArrayUtil au1,au2 ;
-	au1.base = marks1;
-	au1.typeSize=sizeof(char);
-	au1.length = 5;
-	au2.base = marks2;
-	au2.typeSize=sizeof(char);
-	au2.length = 5;
-	result = areEqual(au1,au2);
+	int result;
+	util1=(ArrayUtil){(char[]){'q','w','e','r','t'},sizeof(char),5};
+	util2=(ArrayUtil){(char[]){'Q','w','E','t','r'},sizeof(char),5};
+
+	result = areEqual(util1,util2);
 	assertEqual(result, 0);
 } 
 // -------------------------------------areEqual(float)--------------------------------------------------------------
@@ -381,4 +358,16 @@ void test_filter_populate_destination_array_until_hits_max_size_and_return_no_el
  	assertEqual(c,2);
  	assertEqual(evens[0],22);
  	assertEqual(evens[1],12);
+}
+void multiplyBy(void* hint, void* sourceItem, void* destinationItem){
+	*(int*)destinationItem = *(int*)sourceItem * *(int*)(hint);
+}
+void test_map_converts_each_element_source_array_and_put_it_to_destination_array(){
+	int hint =10;
+	ArrayUtil expected={(int[]){10,20,30,40,50},sizeof(int),5};
+	util1=(ArrayUtil){(int[]){1,2,3,4,5},sizeof(int),5};
+	util2 =create(sizeof(int),5);
+	
+	map(util1,util2,multiplyBy,&hint);
+	assert(areEqual(expected, util2));
 }

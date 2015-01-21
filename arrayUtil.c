@@ -69,9 +69,10 @@ void dispose(ArrayUtil util){
 void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 	int i;
 	void * item = malloc(util.typeSize);
+	byte_ptr base = (byte_ptr) util.base;
 	for (i=0;i<util.length;i++){
 		
-		memcpy(item,&(util.base[i*util.typeSize]),util.typeSize);
+		memcpy(item,&(base[i*util.typeSize]),util.typeSize);
 		
 		if(match(hint,item)){
 			return item;
@@ -82,10 +83,11 @@ void* findFirst(ArrayUtil util, MatchFunc* match, void* hint){
 
 void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 	int i;
+	byte_ptr base = (byte_ptr) util.base;
 	void * item = malloc(util.typeSize);
 	for (i = (util.length-1);i >= 0;i--){
 		
-		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
 		
 		if(match(hint,item)){
 			return item;
@@ -96,10 +98,11 @@ void* findLast(ArrayUtil util, MatchFunc* match, void* hint){
 int count(ArrayUtil util, MatchFunc* match, void* hint){
 	int i;
 	int counter = 0;
+	byte_ptr base = (byte_ptr) util.base;
 	void * item = malloc(util.typeSize);
 	for (i = 0;i < util.length;i++){
 
-		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
 
 		if(match(hint,item)){
 			counter++;
@@ -111,13 +114,15 @@ int count(ArrayUtil util, MatchFunc* match, void* hint){
 int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems ){
 	int i;
 	int counter = 0;
+	byte_ptr * dest =(byte_ptr*) destination;
+	byte_ptr base = (byte_ptr) util.base;
 	void * item = malloc(util.typeSize);
 	for (i = 0;i < util.length;i++){
 
-		memcpy(item,&(util.base[(i*util.typeSize)]),util.typeSize);
+		memcpy(item,&(base[(i*util.typeSize)]),util.typeSize);
 	
 		if(match(hint,item)){
-			memcpy(&((*destination)[counter*util.typeSize]),item,util.typeSize);
+			memcpy(&((*dest)[counter*util.typeSize]),item,util.typeSize);
 			counter++;
 		}
 
@@ -128,3 +133,13 @@ int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int
 	}
 	return counter;
 }
+void map(ArrayUtil source, ArrayUtil destination, ConvertFunc* convert, void* hint){
+	int i;
+	byte_ptr base = (byte_ptr) source.base;
+	byte_ptr dest = (byte_ptr)destination.base;
+	
+	for (i=0;i<source.length;i++){
+		convert(hint,&(base[(i*source.typeSize)]),&(dest[(i*destination.typeSize)]));
+	}
+}
+
