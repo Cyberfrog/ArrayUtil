@@ -21,18 +21,12 @@ ArrayUtil create(int typeSize, int length){
 }
 
 ArrayUtil resize(ArrayUtil util, int length){
-	int i,index;
 	ArrayUtil newUtil = create(util.typeSize,length);
 	byte_ptr source = (byte_ptr)util.base;
 	byte_ptr destination = (byte_ptr)newUtil.base;
-
 	int byteLength = length>=util.length?util.length*util.typeSize:length*util.typeSize;
-	int diff = length-util.length;
 	memcpy(newUtil.base,util.base,byteLength);
-	for(i = 0;i < diff;i++){
-		index = i+byteLength;
-		destination[index] = 0;
-	}
+
 	return newUtil;
 } 
 
