@@ -22,20 +22,18 @@ ArrayUtil create(int typeSize, int length){
 
 ArrayUtil resize(ArrayUtil util, int length){
 	int i,index;
-	byte_ptr base;
-	int newLength = length*util.typeSize;
-	int byteLength =util.length*util.typeSize;	
-	int diff = (length-util.length)*util.typeSize;
+	ArrayUtil newUtil = create(util.typeSize,length);
+	byte_ptr source = (byte_ptr)util.base;
+	byte_ptr destination = (byte_ptr)newUtil.base;
 
-	util.base = realloc(util.base,newLength);
-	util.length = length;
-	base = (byte_ptr)util.base;
-
+	int byteLength = length>=util.length?util.length*util.typeSize:length*util.typeSize;
+	int diff = length-util.length;
+	memcpy(newUtil.base,util.base,byteLength);
 	for(i = 0;i < diff;i++){
 		index = i+byteLength;
-		base[index] = 0;
+		destination[index] = 0;
 	}
-	return util;
+	return newUtil;
 } 
 
 int findIndex(ArrayUtil util, void* element){
