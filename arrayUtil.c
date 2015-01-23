@@ -114,13 +114,13 @@ int count(ArrayUtil util, MatchFunc* match, void* hint){
 int filter(ArrayUtil util, MatchFunc* match, void* hint, void** destination, int maxItems ){
 	int i;
 	int counter = 0;
-	byte_ptr * dest =(byte_ptr*) destination;
+	byte_ptr* dest =(byte_ptr*) destination;
 	byte_ptr base = (byte_ptr) util.base;
 	void * item ;
 	for (i = 0;i < util.length;i++){
-		item =&(base[(i*util.typeSize)]);	
+		item =&(base[(i*util.typeSize)]);
 		if(match(hint,item)){
-			memcpy(&((*dest)[counter*util.typeSize]),item,util.typeSize);
+			dest[counter] = item;
 			counter++;
 		}
 

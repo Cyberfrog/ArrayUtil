@@ -2,3 +2,4 @@
 *TestRunner.c
 *.o
 *.core
+spike.c

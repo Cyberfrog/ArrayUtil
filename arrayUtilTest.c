@@ -45,8 +45,8 @@ void test_areEqual_returns_0_when_content_of_both_char_array_are_not_same(){
 
 // void test_areEqual_returns_0_when_content_of_both_string_array_are_not_same(){
 // 	int result;
-// 	char *string[]={"ask","ask","ask","ask","ask"};
-// 	char *string1[]={"ask","ask"};
+// 	char *string1[]={"ask","ask","ask","ask","ask"};
+// 	char *string[]={"ask","ask"};
 // 	printf("----%p %p  %p %s\n",string,string1 ,string1[0],string1[2] );
 // 	util1=(ArrayUtil){string,sizeof(char *),5};
 // 	util2=(ArrayUtil){string1,sizeof(char *),5};
@@ -226,22 +226,21 @@ void test_count_retruns_0_if_non_of_array_element_matches(){
 }
 void test_filter_populate_destination_array_with_evenNumbers(){
 	int maxItem=6;
-	int *evens =(int *)malloc(sizeof(int)*maxItem);
+	int *evens[maxItem];
 	util1 = (ArrayUtil){(int[]){101,22,12,13},sizeof(int),4};
 		
- 	assertEqual(filter(util1,isEven,0,(void**)&evens,maxItem),2);
- 	assertEqual(evens[0],22);
- 	assertEqual(evens[1],12);
+ 	assertEqual(filter(util1,isEven,0,(void**)evens,maxItem),2);
+ 	assertEqual(*(evens[0]),22);
+ 	assertEqual(*(evens[1]),12);
 }
 void test_filter_populate_destination_array_until_hits_max_size_and_return_no_element_added_to_id(){
 	int maxItem=2;
-	int *evens =(int *)malloc(sizeof(int)*maxItem);
+	int *evens [maxItem];
 	util1 = (ArrayUtil){(int[]){101,22,12,14},sizeof(int),4};		
 
- 	assertEqual(filter(util1,isEven,0,(void**)&evens,maxItem),2);
- 	assertEqual(evens[0],22);
- 	assertEqual(evens[1],12);
-
+ 	assertEqual(filter(util1,isEven,0,(void**)evens,maxItem),2);
+ 	assertEqual(*(evens[0]),22);
+ 	assertEqual(*(evens[1]),12);	
 }
 
 void multiplyBy(void* hint, void* sourceItem, void* destinationItem){
